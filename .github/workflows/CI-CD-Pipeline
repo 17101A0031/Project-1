@@ -1,1 +1,42 @@
+name: Terraform Automation
+
+# Manual trigger only — no push/PR trigger
+on:
+  workflow_dispatch:
+    inputs:
+      ACTION:
+        description: 'Select the action to perform'
+        required: true
+        type: choice
+        options:
+          - plan
+          - apply
+        default: 'plan'
+      BRANCH:
+        description: 'Branch to checkout'
+        required: true
+        type: string
+        default: 'main'
+
+jobs:
+  terraform:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ygminds73/Terraform-Automation
+          ref: ${{ inputs.BRANCH }}
+
+      - name: Terraform Init
+        run: terraform init -reconfigure
+
+      - name: Terraform Plan
+        if: ${{ inputs.ACTION == 'plan' }}
+        run: terraform plan
+
+      - name: Terraform Apply
+        if: ${{ inputs.ACTION == 'apply' }}
+        run: terraform apply -auto-approve
 
