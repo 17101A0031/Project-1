@@ -26,7 +26,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: ygminds73/Terraform-Automation
+          repository: 17101A0031/Project-1
           ref: ${{ inputs.BRANCH }}
 
       - name: Terraform Init
