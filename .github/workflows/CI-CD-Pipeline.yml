@@ -11,12 +11,13 @@ on:
         options:
           - plan
           - apply
+          - destroy
         default: 'plan'
       BRANCH:
         description: 'Branch to checkout'
         required: true
         type: string
-        default: 'main'
+        default: 'master'
 
 jobs:
   terraform:
@@ -26,7 +27,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: 17101A0031/Project-1
           ref: ${{ inputs.BRANCH }}
 
       - name: Terraform Init
@@ -40,3 +40,6 @@ jobs:
         if: ${{ inputs.ACTION == 'apply' }}
         run: terraform apply -auto-approve
 
+      - name: Terraform Destroy
+        if: ${{ inputs.ACTION == 'destroy' }}
+        run: terraform destroy -auto-approve
